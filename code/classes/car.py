@@ -1,9 +1,7 @@
 class Car:
     def __init__(self, name, orientation, x, y, length):
-
         # returns list of info for each car
         self.info = [name, orientation, x, y, length]
-        # print(f" {self.orientation}, {self.coordinates}, {self.length}")
 
     def move(self):
             pass

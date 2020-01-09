@@ -16,6 +16,9 @@ from board import Board
 class Game:
     def __init__(self, gameboard_file):
         self.cars = self.load_cars(gameboard_file)
+        #self.size nog dynamisch maken o.b.v. gameboard_file naam
+        self.size = 6
+        self.board = Board(self.size)
 
     def load_cars(self, gameboard_file):
         """
@@ -45,6 +48,3 @@ class Game:
 # NOTE: Dit weghalen bij het inleveren, aparte "main.py" file maken
 if __name__ == "__main__":
     lvl1 = Game('../../gameboards/Rushhour6x6_1.csv')
-    print(lvl1.cars)
-    print("TEST")
-    print(lvl1.cars[0][0])
