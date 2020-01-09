@@ -28,9 +28,9 @@ class Game:
 
             # create car for each row
             for row in reader:
-                car = Car(row['car'], row['orientation'], row['x,y'], row['length'])
-                cars.append(car)
-
+                coordinates = row['x,y'].split(",")
+                car = Car(row['car'], row['orientation'], coordinates[0], coordinates[1], row['length'])
+                cars.append(car.info)
             return cars
 
     # in string method functie maken die bord simuleert
@@ -44,5 +44,7 @@ class Game:
 
 # NOTE: Dit weghalen bij het inleveren, aparte "main.py" file maken
 if __name__ == "__main__":
-    # Game('gameboards/Rushhour6x6_1.csv')
-    pass
+    lvl1 = Game('../../gameboards/Rushhour6x6_1.csv')
+    print(lvl1.cars)
+    print("TEST")
+    print(lvl1.cars[0][0])
