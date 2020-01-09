@@ -5,7 +5,7 @@ class Car:
         self.coordinates = coordinates
         self.length = length
         # print(f" {self.orientation}, {self.coordinates}, {self.length}")
-        print(f"Car {self.name}:{self.orientation}, {self.coordinates}, {self.length}"))
+        print(f"Car {self.name}:{self.orientation}, {self.coordinates}, {self.length}")
 
     def move(self):
             pass

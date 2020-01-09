@@ -1,6 +1,6 @@
 import csv
-from .car import Car
-from .board import Board
+from car import Car
+from board import Board
 
 
 # Mentorgesprek notes: class car (x,y, orientatie, length, name)
