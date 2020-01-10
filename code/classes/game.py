@@ -15,17 +15,20 @@ import random
 
 class Game:
     def __init__(self, gameboard_file):
-        self.cars = self.load_cars(gameboard_file)
+        #self.cars = self.load_cars(gameboard_file)
         #self.size nog dynamisch maken o.b.v. gameboard_file naam
-        self.size = 6
-        self.board = Board(self.size)
+        #self.size = 6
+        self.gameboard_file = gameboard_file
+        x = os.listdir(gameboard_file)
+        print(x)
 
-    def load_cars(self, gameboard_file):
+
+    def load_cars(self):
         """
         Loads all cars into the game
         """
         # read through csv gameboard file
-        with open(gameboard_file, "r") as in_file:
+        with open(self.gameboard_file, "r") as in_file:
             reader = csv.DictReader(in_file, skipinitialspace=True)
             cars = []
 
@@ -99,6 +102,13 @@ class Game:
         return s
         #return(f"Auto's:{self.cars}")
 
+    def move_car(self, car_name, orientation, direction):
+        if orientation == "H":
+            print(self.cars)
+            print("Move")
+            pass
+        elif orientation =="V":
+            pass
 
 # NOTE: Dit weghalen bij het inleveren, aparte "main.py" file maken
 if __name__ == "__main__":
