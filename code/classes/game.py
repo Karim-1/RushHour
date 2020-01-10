@@ -15,17 +15,18 @@ from board import Board
 
 class Game:
     def __init__(self, gameboard_file):
-        self.cars = self.load_cars(gameboard_file)
+        #self.cars = self.load_cars(gameboard_file)
         #self.size nog dynamisch maken o.b.v. gameboard_file naam
-        self.size = 6
-        self.board = Board(self.size)
+        #self.size = 6
+        self.gameboard_file = gameboard_file
 
-    def load_cars(self, gameboard_file):
+
+    def load_cars(self):
         """
         Loads all cars into the game
         """
         # read through csv gameboard file
-        with open(gameboard_file, "r") as in_file:
+        with open(self.gameboard_file, "r") as in_file:
             reader = csv.DictReader(in_file, skipinitialspace=True)
             cars = []
 
@@ -36,6 +37,7 @@ class Game:
                 cars.append(car.info)
             return cars
 
+
     # in string method functie maken die bord simuleert
     def __repr__(self):
         s=""
@@ -44,7 +46,24 @@ class Game:
         return s
         #return(f"Auto's:{self.cars}")
 
+    def move_car(self, car_name, orientation, direction):
+        if orientation == "H":
+            print(self.cars)
+            print("Move")
+            pass
+        elif orientation =="V":
+            pass
 
 # NOTE: Dit weghalen bij het inleveren, aparte "main.py" file maken
 if __name__ == "__main__":
     lvl1 = Game('../../gameboards/Rushhour6x6_1.csv')
+#    print(lvl1.cars[0][0])
+#    car_name = lvl1.cars[0][0]
+#    orientation = lvl1.cars[0][1]
+#    print(orientation)
+#    direction = -1
+#    print(direction)
+#    lvl1.move_car(car_name, orientation, direction)
+    cars = lvl1.load_cars()
+    current_board = Board(6, cars)
+    current_board.load_board()
