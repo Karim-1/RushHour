@@ -8,12 +8,9 @@ class Board:
         """
         # VOOR 10-1: willen we list in list maken? Zodat we erover heen kunnen loopen?
         # xx
-        Matrix = [[0 for x in range(size)] for y in range(size)]
-        print(Matrix)
         for i in range(size):
             for j in range(size):
-                print("# ", end='')
-            print("\n")
+                pass
 
     def __repr__(self):
-        return self.board
+        return(self.board)
