@@ -1,7 +1,6 @@
 from car import Car
 from board import Board
 import csv
-import os
 import random
 
 # Mentorgesprek notes: class car (x,y, orientatie, length, name)
@@ -16,20 +15,17 @@ import random
 
 class Game:
     def __init__(self, gameboard_file):
-        # retrieve board size from filename
-        filename = os.path.basename(gameboard_file)
-        size = int(filename[8])
+        self.cars = self.load_cars(gameboard_file)
+        #self.size nog dynamisch maken o.b.v. gameboard_file naam
+        self.size = 6
+        self.board = Board(self.size)
 
-        self.size = size
-        self.gameboard_file = gameboard_file
-        self.cars = self.load_cars()
-
-    def load_cars(self):
+    def load_cars(self, gameboard_file):
         """
         Loads all cars into the game
         """
         # read through csv gameboard file
-        with open(self.gameboard_file, "r") as in_file:
+        with open(gameboard_file, "r") as in_file:
             reader = csv.DictReader(in_file, skipinitialspace=True)
             cars = []
 
@@ -51,8 +47,8 @@ class Game:
                     if car[0] == car_name:
                         print("oude auto:", car)
                         # move car if move is valid
-                        self.valid_move(car_name)
-                        if self.valid_move(car_name) == True:
+                        self.valid_move()
+                        if self.valid_move() == True:
                             car[2] = car[2] - 1
                             print("nieuwe auto:", car)
                         else:
@@ -69,19 +65,16 @@ class Game:
             return False
 
 
-    def valid_move(self, car_name):
+    def valid_move(self):
         # check if car is still on the board
-        print(car_name)
-        print(self.cars[0][0])
         for car in self.cars:
-            if car[0] == car_name:
-                print("check",car[2], car[3])
-                if car[2] or car[3] < 1:
-                    return False
-                    print("FALSE1")
-                if car[2] or car[3] > self.size:
-                    return False
-                    print("FALSE2")
+            print("check",car[2], car[3])
+            if car[2] or car[3] < 1:
+                return False
+                print("FALSE1")
+            if car[2] or car[3] > self.size:
+                return False
+                print("FALSE2")
         print("TRUE")
         return True
 
@@ -91,16 +84,10 @@ class Game:
         return random.choice(self.cars)
 
     def random_move(self):
-        # list with back- or forward move
+        # create list with move options
         move = [1,-1]
         # return random move
         return random.choice(move)
-
-    def won(self):
-        # if red car reaches the right side of the board, game is won
-        if self.cars[-1][3] == self.size - 1:
-            return True
-        return False
 
 
 
@@ -110,6 +97,7 @@ class Game:
         for c in self.cars:
             s+=str(c)
         return s
+        #return(f"Auto's:{self.cars}")
 
 
 # NOTE: Dit weghalen bij het inleveren, aparte "main.py" file maken
@@ -121,7 +109,4 @@ if __name__ == "__main__":
     direction = -1
     print(f"Move to: {direction}")
     lvl1.move_car(car_name, orientation, direction)
-    print(f"Car:{car_name}: coordinates:{coordinates}")
-    cars = lvl1.load_cars()
-    current_board = Board(6, cars)
-    #print(current_board)
+    print(f"Car:{car_name}. \n coordinates:{coordinates}")

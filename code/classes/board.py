@@ -3,6 +3,7 @@ class Board:
         #self.board = self.load_board(size)
         self.size=size
         self.cars=cars
+        self.board = self.load_board()
 
     def load_board(self):
         """
@@ -10,8 +11,8 @@ class Board:
         """
         # VOOR 10-1: willen we list in list maken? Zodat we erover heen kunnen loopen?
         # Maakt een bord van n*n
-        self.Board = [['O' for g in range(self.size)] for h in range(self.size)]
-        print(self.cars)
+        board = [['O' for g in range(self.size)] for h in range(self.size)]
+
         for x in range(self.size):
             for y in range(self.size):
                 for car in self.cars:
@@ -20,13 +21,13 @@ class Board:
                             # if coordinate is good, print coordinates
                             # else, print empty
                             for i in range(int(car[4])):
-                                self.Board[(self.size-(x+1))][(y+i)]=car[0]
+
+                                board[(self.size-(x+1))][(y+i)]=car[0]
 
                         if car[1]=='V':
                             for i in range(int(car[4])):
-                                self.Board[(self.size-(x+i+1))][(y)]=car[0]
-            print(self.Board)
-
+                                board[(self.size-(x+i+1))][(y)]=car[0]
+        print(board)
 
     def __repr__(self):
-        return self.Board
+        return self.board
