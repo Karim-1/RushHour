@@ -20,11 +20,11 @@ class Board:
                             # if coordinate is good, print coordinates
                             # else, print empty
                             for i in range(int(car[4])):
-                                self.Board[(self.size-(x+1))][(y+1+i-1)]=car[0]
+                                self.Board[(self.size-(x+1))][(y+i)]=car[0]
 
                         if car[1]=='V':
                             for i in range(int(car[4])):
-                                self.Board[(self.size-(x+i+1))][(y+1-1)]=car[0]
+                                self.Board[(self.size-(x+i+1))][(y)]=car[0]
             print(self.Board)
 
 
