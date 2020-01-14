@@ -27,7 +27,7 @@ class Board:
                         if car[1]=='V':
                             for i in range(int(car[4])):
                                 board[(self.size-(x+i+1))][(y)]=car[0]
-        print(board)
+        return board
 
     def __repr__(self):
-        return self.board
+        return print(self.board)
