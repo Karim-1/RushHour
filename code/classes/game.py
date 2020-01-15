@@ -23,6 +23,7 @@ class Game:
             s+=str(c)
         return s
 
+    # VERANDEREN NAAR BOARD IPV CARS
     def won(self):
         """
         Checks if the red car can drive through the exit of the parking lot.
@@ -42,14 +43,30 @@ if __name__ == "__main__":
     gameboard_file = lvl1.gameboard_file
     board1 = Board(size, gameboard_file)
 
-    # Loads the cars in the board
-    randomcar = random.choice(board1.load_cars())
-    randommove = random.choice([-1,1])
-    loaded_board = board1.load_board()
+    # randomcar = random.choice(board1.load_cars())
+    # randommove = random.choice([-1,1])
+    cars = board1.cars
 
-    # Checks if a particular car can be moved
-    move1 = Move(randomcar, randommove, size, loaded_board)
-    print(move1.valid_move())
 
-    # Prints the board
-    board1.print_board()
+    # # random algorithm:
+    # steps = 0
+    # while board1.won() == False:
+    #     move = random.choice([-1,1])
+    #     car = random.choice(cars)
+    #     print(car)
+    #
+    #     board1.move_car(car, move)
+    #
+    #     steps += 1
+    #
+    # print(f"GAME IS WON IN {steps} STEPS! JOEPIE")
+
+
+    # test with a sequence of cars
+    print(board1.board)
+    board1.move_car(cars[0], -1)
+    print(board1.board)
+    board1.move_car(cars[2], -1)
+    print(board1.board)
+    board1.move_car(cars[6], 1)
+    print(board1.board)

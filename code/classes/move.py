@@ -1,3 +1,5 @@
+from board import Board
+
 class Move:
     def __init__(self, car, move, size, loaded_board):
         # retrieve board size from filename
@@ -5,6 +7,7 @@ class Move:
         self.move = move
         self.size = size
         self.loaded_board = loaded_board
+        print("HIJ KOMT HIER")
 
     def coord_array(self, x, y):
         """
@@ -16,33 +19,37 @@ class Move:
 
     def move_car(self):
         """
-        Moves the car
+        Moves a car.
         """
-
-        # check orientation to decide in which way to move
-        if car[1] == "H":
-            # check direction to move
-            if self.valid_move():
-                if self.move < 0:
-                    print(f"Car {self.car[0]} moved left")
-                if self.move > 0:
-                    print(f"Car {self.car[0]} moved right")
-                self.car[2] = self.car[2] + self.move
-            else:
-                return False
-
-        if self.car[1] == "V":
-
-            # check direction to move
-            if self.valid_move():
-                if self.move < 0:
-                    print(f"Car {self.car[0]} moved down")
-                if self.move > 0:
-                    print(f"Car {self.car[0]} moved up")
-                self.car[3] = self.car[3] + self.move
-            else:
-                return False
+        car = self.car
+        cars = Board.cars()
         print(self.car)
+        print(cars)
+        for c in cars:
+            if cars[0] == car[0]:
+                # check orientation to decide in which way to move
+                if car[1] == "H":
+                    # check direction to move
+                    if self.valid_move():
+                        if self.move < 0:
+                            print(f"Car {self.car[0]} moved left")
+                        if self.move > 0:
+                            print(f"Car {self.car[0]} moved right")
+                        c[2] = c[2] + self.move
+                        return True
+
+                if self.car[1] == "V":
+
+                    # check direction to move
+                    if self.valid_move():
+                        if self.move < 0:
+                            print(f"Car {self.car[0]} moved down")
+                        if self.move > 0:
+                            print(f"Car {self.car[0]} moved up")
+                        self.car[3] = self.car[3] + self.move
+                        return True
+                print(self.car)
+        return False
 
     def valid_move(self):
         """
