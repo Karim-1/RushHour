@@ -1,4 +1,5 @@
 from car import Car
+from test import Board
 
 import csv
 import os
@@ -187,6 +188,7 @@ if __name__ == "__main__":
     lvl1.move_car(cars[0],-1)
     print(lvl1.board)
     counter = 0
+    currentboard = Board(6,cars)
     # while lvl1.won()== False:
     #     print(counter,":")
     #     print(lvl1.board)
