@@ -1,19 +1,20 @@
 # these imports are for plotting the board
-import matplotlib as mpl
+
+from car import Car
 from matplotlib import pyplot as plt
 from matplotlib import colors
 import csv
-from car import Car
+import matplotlib as mpl
 
 
 class Board:
     """
-    This class ensures that the board is represented in a gameboard-like style.
+    This class represents the game board and allows for board updates based on car moves.
     """
 
     def __init__(self, size, gameboard_file):
         """
-        Intialize board parameters
+        Intialize board parameters.
         """
 
         self.size = size
@@ -23,7 +24,7 @@ class Board:
 
     def load_cars(self):
         """
-        Loads all cars into the game
+        Loads all cars into the game.
         """
         # read through csv gameboard file
         with open(self.gameboard_file, "r") as in_file:
@@ -44,10 +45,10 @@ class Board:
 
     def load_board(self):
         """
-        Loads default empty board
+        Loads default empty board.
         """
-        # make a list inside of a list
-        board = [['O' for g in range(self.size)] for h in range(self.size)]
+        # create empty matrix to represent board
+        board = [['_' for g in range(self.size)] for h in range(self.size)]
 
         # loop over all x-coordinates
         for x in range(self.size):
@@ -60,20 +61,24 @@ class Board:
 
                     # check for cars at the current coordinate
                     if int(car[2]) == (y+1) and int(car[3]) == (x+1):
-                        if car[1]=='H':
 
-                            # loop over length of car
+                        # loop over length of horizontal car
+                        if car[1]=='H':
                             for i in range(int(car[4])):
-                                # write the name of the car at the correct places
+
+                                # write the car name
                                 board[(self.size-(x+1))][(y+i)]=car[0]
 
-                        # same but for vertically oriented cars
+                        # repeat for vertical cars
                         if car[1]=='V':
                             for i in range(int(car[4])):
                                 board[(self.size-(x+i+1))][(y)]=car[0]
         return board
 
     def update_board(self):
+        """
+        Updates the board.
+        """
         self.board = self.load_board()
 
     def print_board(self):
@@ -88,7 +93,7 @@ class Board:
         for i in range(self.size):
             for j in range(self.size):
                 # if the place is empty, set 0
-                if self.board[i][j] == 'O':
+                if self.board[i][j] == '_':
                     self.board[i][j]=0
                 # if car is red, set 1
                 elif self.board[i][j] == 'X':
@@ -98,7 +103,7 @@ class Board:
                     self.board[i][j] = dict[self.board[i][j]]
 
         # list of possible colors, ranging from grey to red
-        cmap = colors.ListedColormap(['grey','yellow', 'orange', 'green', 'purple', 'lightcoral', 'lightcyan', 'aquamarine', 'mediumspringgreen', 'fuchsia', 'mediumslateblue', 'darkviolet', 'dodgerblue', 'pink', 'goldenrod', 'navajowhite', 'peachpuff', 'olivedrab', 'teal', 'palevioletred', 'papayawhip', 'maroon', 'navy', 'red'])
+        cmap = colors.ListedColormap(['grey','yellow', 'orange', 'green', 'purple', 'lightcoral', 'lightcyan', 'aquamarine', 'mediumspringgreen', 'fuchsia', 'mediumslateblue', 'darkviolet', 'dodgerblue', 'pink', 'goldenrod', 'navajowhite', 'mediumpurple', 'olivedrab', 'teal', 'palevioletred', 'papayawhip', 'maroon', 'navy', 'red'])
 
         # show board
         plt.imshow(self.board, cmap=cmap)
@@ -107,13 +112,13 @@ class Board:
         plt.show()
 
 
-    def coord_array(self, x, y):
+    def convert(self, x, y):
         """
-        Convert coordinates to correct array places.
+        Converts car coordinates to correct array places.
         """
-        x = x - 1
-        y = self.size - y
-        return [y,x]
+        col = x - 1
+        row = self.size - y
+        return [row,col]
 
     def move_car(self, car, move):
         """
@@ -121,81 +126,116 @@ class Board:
         """
 
         cars = self.cars
-        for c in cars:
-            if c[0] == car[0]:
-                # check orientation to decide in which way to move
-                if car[1] == "H":
 
-                    # check if move is valid
-                    if self.valid_move(car, move):
-                        # check direction to move
+        # loop over cars
+        for c in cars:
+
+            # check if move is valid
+            if self.valid_move(car, move):
+                if c[0] == car[0]:
+
+                    # check orientation to decide in which way to move
+                    if car[1] == "H":
+
+                        # check direction to move for print statement
                         if move < 0:
                             print(f"Car {car[0]} moved left")
                         if move > 0:
                             print(f"Car {car[0]} moved right")
-                        c[2] = c[2] + move
 
-                if car[1] == "V":
-                    if self.valid_move(car, move):
-                        if move < 0:
-                            print(f"Car {car[0]} moved down")
-                        if move > 0:
-                            print(f"Car {car[0]} moved up")
-                        c[3] = c[3] + move
-        self.update_board()
+                        # change car position and update board
+                        c[2] = c[2] + move
+                        self.update_board()
+                        return True
+
+                    # repeat for vertical cars
+                    if car[1] == "V":
+                            if move > 0:
+                                print(f"Car {car[0]} moved up")
+                            if move < 0:
+                                print(f"Car {car[0]} moved down")
+                            c[3] = c[3] + move
+                            self.update_board()
+                            return True
+
+        return False
 
 
     def valid_move(self, car, move):
-        # save x and y coordinates
-        row = self.coord_array(car[2], car[3])[0]
-        col = self.coord_array(car[2], car[3])[1]
+        """
+        Checks if a car move is legal.
+        """
+
+        # save row and column coordinates
+        row = self.convert(car[2], car[3])[0]
+        col = self.convert(car[2], car[3])[1]
+
         orientation = car[1]
+
         # check move for horizontal cars
         if orientation == 'H':
+
+            # loop over moves
             for i in range(abs(move)):
+
+                # create 'steps' to check all places between start- and final car position
                 steps = move + i
+
                 # check if car stays on the board
                 if (col + steps < 0) or (col + steps + car[4] > self.size):
-                    # print("Car out of bounds")
                     return False
+
+                # check if board is free left of the car
                 elif steps < 0:
-                    if self.board[row][col + steps] != 'O':
-                        # print("Can't move left")
-                        return False
-                elif steps > 0:
-                    if self.board[row][col + car[4] + steps - 1] != 'O':
-                        # print("Can't move right")
+                    if self.board[row][col + steps] != '_':
                         return False
 
-        # check move for vertical cars
+                # check if board is free right of the car
+                elif steps > 0:
+                    if self.board[row][col + car[4] + steps - 1] != '_':
+                        return False
+
+        # repeat for vertical cars
         for i in range(abs(move)):
             if orientation == 'V':
                 steps = move + i
                 if ((row - steps) < 0) or (row-steps+car[4] > self.size):
-                    # print("Car out of bounds")
                     return False
                 elif steps < 0:
-                    if self.board[row + steps][col] != 'O':
-                        # print("Can't move down")
+                    if self.board[row - steps][col] != '_':
                         return False
                 elif steps > 0:
-                    if self.board[row - steps][col] != 'O':
-                        # print("Can't move up")
+                    if self.board[row - car[4] - steps + 1][col] != '_':
                         return False
 
-        # print("Valid move")
         return True
 
 
     def won(self):
         """
-        Checks if the red car can drive through the exit of the parking lot.
+        Checks if the red car can drive through the exit of the board.
         If so, the game is won.
         """
 
-        if self.cars[-1][3] == self.size - 1:
-            return True
-        return False
+        red_car = self.cars[-1]
+        coordinates = self.convert(red_car[2], red_car[3])
+        position = coordinates[1]
+        i = 0
+        k = 0
+
+        # create loop that stays on the board matrix
+        while k < self.size-1:
+            k = position + i + red_car[4]
+
+            # move one spot right each step
+            i+=1
+
+            # return false if one of the steps is blocked
+            if self.board[2][k] != '_':
+                return False
+
+        # return True if right side of the red car is clear
+        return True
 
     def _repr_(self):
         return self.board
