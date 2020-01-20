@@ -140,25 +140,31 @@ class Board:
                     if car[1] == "H":
 
                         # check direction to move for print statement
-                        if move < 0:
-                            print(f"Car {car[0]} moved left")
-                        if move > 0:
-                            print(f"Car {car[0]} moved right")
+                        #if move < 0:
+                            #print(f"Car {car[0]} moved left")
+                        #if move > 0:
+                            #print(f"Car {car[0]} moved right")
 
                         # change car position and update board
                         c[2] = c[2] + move
                         self.update_board()
-                        return True
+                        list = []
+                        list.append(self.board)
+                        list.append(cars)
+                        return list
 
                     # repeat for vertical cars
                     if car[1] == "V":
-                            if move > 0:
-                                print(f"Car {car[0]} moved up")
-                            if move < 0:
-                                print(f"Car {car[0]} moved down")
+                            #if move > 0:
+                                #print(f"Car {car[0]} moved up")
+                            #if move < 0:
+                                #print(f"Car {car[0]} moved down")
                             c[3] = c[3] + move
                             self.update_board()
-                            return True
+                            list = []
+                            list.append(self.board)
+                            list.append(cars)
+                            return list
 
         return False
 
