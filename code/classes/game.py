@@ -12,7 +12,11 @@ class Game:
 
         # retrieve board size from filename of the board
         filename = os.path.basename(gameboard_file)
-        self.size = int(filename[8])
+        if int(filename[8]) == 1:
+            self.size = 12
+        else:
+            self.size = int(filename[8])
+        print(self.size)
         self.gameboard_file = gameboard_file
 
 
@@ -21,7 +25,7 @@ class Game:
 if __name__ == "__main__":
 
     # initialize first game and board
-    lvl1 = Game('../../gameboards/Rushhour9x9_4.csv')
+    lvl1 = Game('../../gameboards/Rushhour12x12_7.csv')
     size = lvl1.size
     gameboard_file = lvl1.gameboard_file
     board1 = Board(size, gameboard_file)
@@ -34,14 +38,15 @@ if __name__ == "__main__":
     steps = 0
     while board1.won() == False:
         # generate random car + move
-        move = random.choice([-1,1])
+        move = random.choice([-2,-1,1,2])
         car = random.choice(cars)
 
         move_car = board1.move_car(car, move)
         move_car
-        
+
+        print(board1.board)
         # increase steps if move is valid
-        if move_car is True:
+        if move_car is not False:
             steps += 1
             print(steps)
 
@@ -49,38 +54,21 @@ if __name__ == "__main__":
     print(f"GAME IS WON IN {steps} STEPS!")
 
 
-    # test with a sequence of cars
-    print(board1.board)
-    board1.move_car(cars[0], -2)
+    # # test with a sequence of cars
     # print(board1.board)
-    # board1.move_car(cars[1], -2)
+    # board1.move_car(cars[5], 3)
     # print(board1.board)
-    # board1.move_car(cars[2], -1)
+    # board1.move_car(cars[4], -1)
     # print(board1.board)
-    # board1.move_car(cars[3], -1)
+    # board1.move_car(cars[1], -3)
+    # print(board1.board)
+    # board1.move_car(cars[0], -3)
+    # print(board1.board)
+    # board1.move_car(cars[1], 3)
+    # print(board1.board)
+    # board1.move_car(cars[4], 1)
+    # print(board1.board)
+    # board1.move_car(cars[5], -2)
     # print(board1.board)
     # board1.move_car(cars[-1], -2)
     # print(board1.board)
-    # print(cars[6])
-    # board1.move_car(cars[6], 1)
-    # print(board1.board)
-    # board1.move_car(cars[6], 1)
-    # print(board1.board)
-    # board1.move_car(cars[7], 1)
-    # print(board1.board)
-    # board1.move_car(cars[5], 1)
-    # print(board1.board)
-    # board1.move_car(cars[5], 1)
-    # print(board1.board)
-    # board1.move_car(cars[10], 1)
-    # print(board1.board)
-    # board1.move_car(cars[10], 1)
-    # print(board1.board)
-    # board1.move_car(cars[8], -3)
-    # print(board1.board)
-    # board1.move_car(cars[11], -3)
-    # print(board1.board)
-    # print(cars[7])
-    # board1.move_car(cars[7], 1)
-    # print(board1.board)
-    # print(cars[7])
