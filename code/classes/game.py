@@ -21,7 +21,7 @@ class Game:
 if __name__ == "__main__":
 
     # initialize first game and board
-    lvl1 = Game('../../gameboards/Rushhour6x6_1.csv')
+    lvl1 = Game('../../gameboards/Rushhour9x9_4.csv')
     size = lvl1.size
     gameboard_file = lvl1.gameboard_file
     board1 = Board(size, gameboard_file)
@@ -37,10 +37,9 @@ if __name__ == "__main__":
         move = random.choice([-1,1])
         car = random.choice(cars)
 
-        # move car
         move_car = board1.move_car(car, move)
         move_car
-
+        
         # increase steps if move is valid
         if move_car is True:
             steps += 1
@@ -50,22 +49,38 @@ if __name__ == "__main__":
     print(f"GAME IS WON IN {steps} STEPS!")
 
 
-    # # test with a sequence of cars
+    # test with a sequence of cars
+    print(board1.board)
+    board1.move_car(cars[0], -2)
     # print(board1.board)
-    # board1.move_car(cars[0], -1)
+    # board1.move_car(cars[1], -2)
     # print(board1.board)
     # board1.move_car(cars[2], -1)
     # print(board1.board)
+    # board1.move_car(cars[3], -1)
+    # print(board1.board)
+    # board1.move_car(cars[-1], -2)
+    # print(board1.board)
+    # print(cars[6])
     # board1.move_car(cars[6], 1)
     # print(board1.board)
     # board1.move_car(cars[6], 1)
     # print(board1.board)
-    # board1.move_car(cars[11], -1)
+    # board1.move_car(cars[7], 1)
     # print(board1.board)
-    # board1.move_car(cars[9], -1)
+    # board1.move_car(cars[5], 1)
     # print(board1.board)
-    # board1.move_car(cars[8], -1)
+    # board1.move_car(cars[5], 1)
     # print(board1.board)
-
-    # test for won()
-    # board1.won()
+    # board1.move_car(cars[10], 1)
+    # print(board1.board)
+    # board1.move_car(cars[10], 1)
+    # print(board1.board)
+    # board1.move_car(cars[8], -3)
+    # print(board1.board)
+    # board1.move_car(cars[11], -3)
+    # print(board1.board)
+    # print(cars[7])
+    # board1.move_car(cars[7], 1)
+    # print(board1.board)
+    # print(cars[7])

@@ -103,7 +103,7 @@ class Board:
                     self.board[i][j] = dict[self.board[i][j]]
 
         # list of possible colors, ranging from grey to red
-        cmap = colors.ListedColormap(['grey','yellow', 'orange', 'green', 'purple', 'lightcoral', 'lightcyan', 'aquamarine', 'mediumspringgreen', 'fuchsia', 'mediumslateblue', 'darkviolet', 'dodgerblue', 'pink', 'goldenrod', 'navajowhite', 'mediumpurple', 'olivedrab', 'teal', 'palevioletred', 'papayawhip', 'maroon', 'navy', 'red'])
+        cmap = colors.ListedColormap(['white','yellow', 'orange', 'green', 'purple', 'lightcoral', 'lightcyan', 'aquamarine', 'mediumspringgreen', 'fuchsia', 'mediumslateblue', 'darkviolet', 'dodgerblue', 'pink', 'goldenrod', 'navajowhite', 'mediumpurple', 'olivedrab', 'teal', 'palevioletred', 'lightcoral', 'maroon', 'navy', 'red'])
 
         # show board
         plt.imshow(self.board, cmap=cmap)
@@ -130,9 +130,11 @@ class Board:
         # loop over cars
         for c in cars:
 
-            # check if move is valid
-            if self.valid_move(car, move):
-                if c[0] == car[0]:
+            # if car name matches the car
+            if c[0] == car[0]:
+
+                # check if move is valid
+                if self.valid_move(car, move):
 
                     # check orientation to decide in which way to move
                     if car[1] == "H":
@@ -169,6 +171,7 @@ class Board:
         # save row and column coordinates
         row = self.convert(car[2], car[3])[0]
         col = self.convert(car[2], car[3])[1]
+        length = car[4]
 
         orientation = car[1]
 
@@ -182,7 +185,7 @@ class Board:
                 steps = move + i
 
                 # check if car stays on the board
-                if (col + steps < 0) or (col + steps + car[4] > self.size):
+                if (col + steps < 0) or (col + steps + length > self.size):
                     return False
 
                 # check if board is free left of the car
@@ -192,20 +195,23 @@ class Board:
 
                 # check if board is free right of the car
                 elif steps > 0:
-                    if self.board[row][col + car[4] + steps - 1] != '_':
+                    if self.board[row][col + length + steps - 1] != '_':
                         return False
 
         # repeat for vertical cars
         for i in range(abs(move)):
             if orientation == 'V':
                 steps = move + i
-                if ((row - steps) < 0) or (row-steps+car[4] > self.size):
+                if (row - length + 1 - steps < 0) or (row + length - steps > self.size):
+                    # print("out of bounds")
                     return False
                 elif steps < 0:
                     if self.board[row - steps][col] != '_':
+                        # print("can't go down baby")
                         return False
                 elif steps > 0:
-                    if self.board[row - car[4] - steps + 1][col] != '_':
+                    if self.board[row - length - steps + 1][col] != '_':
+                        # print("can't go up")
                         return False
 
         return True
