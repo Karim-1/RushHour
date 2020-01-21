@@ -1,9 +1,13 @@
-from code.classes.game import Game
 from code.classes.board import Board
 from code.classes.car import Car
+from code.classes.game import Game
 
-from code.algorithms import randomize
 from code.algorithms import breadthfirst
+from code.algorithms import hillclimber
+from code.algorithms import randomize
+
+# from code.algorithms import breadthfirst
+# from code.algorith
 
 import gameboards
 
@@ -19,7 +23,12 @@ if __name__ == "__main__":
 
 
     # randomize
-    randomize.randomize(cars)
+    # randomize.randomize(cars)
+
+    # hillclimber
+    hillclimber.hillclimber(cars)
+
+
 
     # # breadthfirst
     # breadthfirst.breadthfirst(cars, size)

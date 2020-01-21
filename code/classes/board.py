@@ -134,7 +134,7 @@ class Board:
 
         board = self.load_board(cars)
 
-        # self.write_output(car[0],move)
+        self.write_output(car[0],move)
 
         # loop over cars
         for c in cars:
@@ -323,13 +323,13 @@ class Board:
             # move one spot right each step
             i+=1
 
-
             # return false if one of the steps is blocked
             if self.board[row][k] != '_':
                 return False
 
         # return True if right side of the red car is clear
         return True
+
 
     def write_output(self, car, move):
         with open('output.csv',mode='a+', newline='') as output:

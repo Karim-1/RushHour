@@ -1,28 +1,16 @@
-from game import Game
+from .randomize import randomize
 
 
-class Hillclimber(Board):
-    """
-    The hillclimber class improves parts of the random algorithm.
-    This is done by cutting a part of the steps and replacing it with a faster solution.
-    """
+def hillclimber(cars):
+    print("inside hillclimber algorithms")
+    steps = randomize(cars)
+    amount_of_steps = len(steps)
+    print("steps", steps, "nr_of_steps", amount_of_steps)
 
-    def __init__(self):
-        pass
-
-    def run(self):
-        steps = []
-        while Board.won() == False:
-            # generate random car + move
-            car = random.choice(cars)
-            move = random.choice([-3,-2,-1,1,2,3])
-
-            move_car = board1.move_car(car, move)
-            move_car
-
-            # increase steps if move is valid
-            if move_car is not False:
-                steps.append([car,move])
-                print(len(steps))
-
-        print(Board.board)
+    # take the first 25% of the steps
+        # take startpoint, and endpoint
+        # While route length is equal to or larger than 25% of the steps
+            # randomly make a route from startpoint to endpoint
+            # if this route is has less steps than the 25% taken
+                # save it as the first 25% of the STEPS
+                # break
