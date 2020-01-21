@@ -1,11 +1,12 @@
 # these imports are for plotting the board
-
-from car import Car
 from matplotlib import pyplot as plt
 from matplotlib import colors
 import csv
 import matplotlib as mpl
 
+from .car import Car
+
+import os
 
 class Board:
     """
@@ -30,6 +31,7 @@ class Board:
         """
         Loads all cars into the game.
         """
+
         # read through csv gameboard file
         with open(self.gameboard_file, "r") as in_file:
             reader = csv.DictReader(in_file, skipinitialspace=True)
@@ -132,7 +134,7 @@ class Board:
 
         board = self.load_board(cars)
 
-        self.write_output(car[0],move)
+        # self.write_output(car[0],move)
 
         # loop over cars
         for c in cars:
@@ -147,14 +149,19 @@ class Board:
                     if car[1] == "H":
 
                         # check direction to move for print statement
-                        #if move < 0:
-                            #print(f"Car {car[0]} moved left")
-                        #if move > 0:
-                            #print(f"Car {car[0]} moved right")
+                        if move < 0:
+                            print(f"Car {car[0]} moved left")
+                        if move > 0:
+                            print(f"Car {car[0]} moved right")
 
                         # change car position and update board
                         c[2] = c[2] + move
-                        board = self.load_board(cars)
+
+                        # KARIM:
+                        self.board = self.load_board(cars)
+
+                        # # SIRI:
+                        # board = self.load_board(cars)
                         return cars, board
 
                     # repeat for vertical cars
@@ -170,7 +177,7 @@ class Board:
 
     def valid_move(self, board, car, move):
         """
-        Checks if a car move is legal.
+        # Checks if a car move is legal.
         """
 
         # save row and column coordinates
@@ -196,7 +203,7 @@ class Board:
                         return False
 
                     elif board[row][col + steps] != '_':
-                        print(f"Car {car[0]} can't go left")
+                        # print(f"Car {car[0]} can't go left")
                         return False
 
                 # repeat for right side
@@ -205,7 +212,7 @@ class Board:
                         return False
 
                     elif board[row][col + length + steps - 1] != '_':
-                        print(f" Car {car[0]} can't go right")
+                        # print(f" Car {car[0]} can't go right")
                         return False
 
         # repeat for vertical cars
@@ -217,7 +224,7 @@ class Board:
                         return False
 
                     elif board[row - steps][col] != '_':
-                        print(f"Car {car[0]} can't go down")
+                        # print(f"Car {car[0]} can't go down")
                         return False
                 elif move > 0:
                     steps = move - i
@@ -225,7 +232,7 @@ class Board:
                         return False
 
                     elif board[row - length + 1 - steps][col] != '_' :
-                        print(f"Car {car[0]} can't go up")
+                        # print(f"Car {car[0]} can't go up")
                         return False
 
         return True

@@ -26,11 +26,3 @@ class Hillclimber(Board):
                 print(len(steps))
 
         print(Board.board)
-
-    if __name__ == "__main__":
-        lvl1 = Game('../../gameboards/Rushhour6x6_1.csv')
-        size = lvl1.size
-        gameboard_file = lvl1.gameboard_file
-        board1 = Board(size, gameboard_file)
-
-        hillclimber = Hillclimber(board1).run()
