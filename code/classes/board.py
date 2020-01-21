@@ -1,11 +1,12 @@
 # these imports are for plotting the board
-
-from car import Car
 from matplotlib import pyplot as plt
 from matplotlib import colors
 import csv
 import matplotlib as mpl
 
+from .car import Car
+
+import os
 
 class Board:
     """
@@ -26,6 +27,7 @@ class Board:
         """
         Loads all cars into the game.
         """
+
         # read through csv gameboard file
         with open(self.gameboard_file, "r") as in_file:
             reader = csv.DictReader(in_file, skipinitialspace=True)
@@ -120,7 +122,7 @@ class Board:
         row = self.size - y
         return [row,col]
 
-    def move_car(self, car, move):
+    def move_car(self, cars, car, move):
         """
         Moves a car.
         """
