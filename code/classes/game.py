@@ -25,7 +25,7 @@ class Game:
 if __name__ == "__main__":
 
     # initialize first game and board
-    lvl1 = Game('../../gameboards/Rushhour12x12_7.csv')
+    lvl1 = Game('../../gameboards/Rushhour6x6_1.csv')
     size = lvl1.size
     gameboard_file = lvl1.gameboard_file
     board1 = Board(size, gameboard_file)
