@@ -51,42 +51,64 @@ class Move:
                 print(self.car)
         return False
 
-    def valid_move(self):
+    def valid_move(self, board, car, move):
         """
-        Checks if the move is a valid move
+        Checks if a car move is legal.
         """
-        # save x and y coordinates
-        row = self.coord_array(self.car[2], self.car[3])[0]
-        col = self.coord_array(self.car[2], self.car[3])[1]
-        orientation = self.car[1]
+        # save row and column coordinates
+        row = self.convert(car[2], car[3])[0]
+        col = self.convert(car[2], car[3])[1]
+        length = car[4]
+        orientation = car[1]
+
+        #print("row:", row, "\ncol:", col)
 
         # check move for horizontal cars
         if orientation == 'H':
-            for i in range(abs(self.move)):
-                steps = self.move + i
+            # loop over moves
+            for step in range(1,(abs(move)+1)):
 
-                # check if car stays on the board
-                if (col + steps < 0) or (col + steps + self.car[4] > self.size):
-                    return False
-                elif steps < 0:
-                    if self.loaded_board[row][col + steps] != 'O':
-                        return False
-                elif steps > 0:
-                    if self.loaded_board[row][col + self.car[4] + steps - 1] != 'O':
-                        return False
+                # create 'steps' to check all places between start- and final car position
 
-        # check move for vertical cars
-        for i in range(abs(self.move)):
-            if orientation == 'V':
-                steps = self.move + i
-                if ((row - steps) < 0) or (row-steps+self.car[4] > self.size):
-                    return False
-                elif steps < 0:
-                    if self.loaded_board[row - steps][col] != 'O':
-                        return False
-                elif steps > 0:
-                    if self.loaded_board[row - self.car[4] - steps + 1][col] != 'O':
+                # check if car can move left
+                if move < 0:
+
+                    # check if car stays on board and position left of car is free
+                    if col - step < 0:
                         return False
 
-        print("Valid move")
+                    elif board[row][col - step] != '_':
+                        # print(f"Car {car[0]} can't go left")
+                        return False
+
+                # repeat for right side
+                elif move > 0:
+                    if col+step+(length-1) >= self.size:
+                        return False
+
+                    elif board[row][col+step+(length-1)] != '_':
+                        # print(f" Car {car[0]} can't go right")
+                        return False
+
+        # repeat for vertical cars
+
+        elif orientation == 'V':
+            for step in range(1,(abs(move)+1)):
+                if move < 0:
+                    print("VAL", row, step, self.size)
+                    if row + step >= self.size:
+                        return False
+
+                    elif board[row + step][col] != '_':
+                        # print(f"Car {car[0]} can't go down")
+                        return False
+                elif move > 0:
+                    if row - step - (length-1) < 0:
+                        return False
+
+                    elif board[row - step - (length-1)][col] != '_' :
+                        # print(f"Car {car[0]} can't go up")
+                        return False
+
+        print("VALID MOVE")
         return True
