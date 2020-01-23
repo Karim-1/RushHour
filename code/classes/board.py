@@ -3,7 +3,7 @@ from matplotlib import colors
 import csv
 import matplotlib as mpl
 
-from .car import Car
+from code.classes.car import Car
 
 import os
 
@@ -133,7 +133,6 @@ class Board:
         board = self.load_board(temporary)
         #print("MOCE_CAR", cars)
 
-        self.write_output(car[0],move)
 
         # loop over cars
         for c in temporary:
@@ -146,28 +145,19 @@ class Board:
 
                     # check orientation to decide in which way to move
                     if car[1] == "H":
-
-                        # check direction to move for print statement
-                        # if move < 0:
-                            # print(f"Car {car[0]} moved left")
-                        # if move > 0:
-                            # print(f"Car {car[0]} moved right")
-
-                        # change car position and update board
                         c[2] = c[2] + step
+
+                        self.write_output(c[0],step)
                         board = self.load_board(temporary)
                         return temporary, board
 
                     # repeat for vertical cars
                     if car[1] == "V":
-                        #if move > 0:
-                            #print(f"Car {car[0]} moved up")
-                        #if move < 0:
-                            #print(f"Car {car[0]} moved down")
                         c[3] = c[3] + step
+                        
+                        self.write_output(c[0],step)
                         board = self.load_board(temporary)
-                        ret = board.copy()
-                        return temporary, ret
+                        return temporary, board
 
         return False
 
@@ -233,73 +223,8 @@ class Board:
         #print("VALID MOVE", car, move)
         return True
 
-    # def valid_move(self, board, car, move):
-    #     """
-    #     Checks if a car move is legal.
-    #     """
-    #     # save row and column coordinates
-    #     row = self.convert(car[2], car[3])[0]
-    #     col = self.convert(car[2], car[3])[1]
-    #     length = car[4]
-    #     orientation = car[1]
 
-    #     #print("row:", row, "\ncol:", col)
-
-    #     # check move for horizontal cars
-    #     if orientation == 'H':
-
-    #         # loop over moves
-    #         for j in range(abs(move)):
-    #             for i in range(length):
-
-    #                 # create 'steps' to check all places between start- and final car position
-    #                 steps = move + i
-    #                 # check if car can move left
-    #                 if steps < 0:
-
-    #                     # check if car stays on board and position left of car is free
-    #                     if col + steps-j < 0:
-    #                         return False
-
-    #                     if board[row][col + steps-j] != '_':
-    #                         #print(f"Car {car[0]} can't go left")
-    #                         return False
-
-    #                 # repeat for right side
-    #                 elif steps > 0:
-    #                     if col + steps +j:
-    #                         return False
-
-    #                     if self.size or board[row][col + steps +j] != '_':
-    #                         #print(f" Car {car[0]} can't go right")
-    #                         return False
-
-    #     # repeat for vertical cars
-
-    #     if orientation == 'V':
-    #         for j in range((move)):
-    #             for i in range(length):
-    #                 steps = move + i + j
-    #                 print("car", car, "steps", steps, "move", move, "length", length)
-    #                 if move < 0:
-    #                     if row + steps < 0:
-    #                         return False
-    #                     if board[row + steps][col] != '_':
-    #                         #print(f"Car {car[0]} can't go down")
-    #                         return False
-    #                 elif move > 0:
-    #                     print("IKBENHEIR")
-    #                     if row + steps > self.size:
-    #                         return False
-    #                     if board[row + steps][col] != '_' :
-    #                         #print(f"Car {car[0]} can't go up")
-    #                         return False
-
-    #     print("TRUE")
-    #     return True
-
-
-    def won(self):
+    def won(self, board):
         """
         Checks if the red car can drive through the exit of the board.
         If so, the game is won.
@@ -311,10 +236,10 @@ class Board:
         row = coordinates[0]
 
         for i in reversed(range(self.size)):
-            if self.board[row][i] == 'X':
+            if board[row][i] == 'X':
                 return True
 
-            elif self.board[row][i] != '_':
+            elif board[row][i] != '_':
                 return False
 
 
