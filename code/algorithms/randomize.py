@@ -13,6 +13,8 @@ def randomize(cars):
     print(board.board)
     steps = {}
     steps_count = 0
+    steps = []
+
     while board.won() == False:
         # generate random car + move
         move = random.choice(list(range(-board.size,board.size)))
@@ -21,7 +23,6 @@ def randomize(cars):
         # move a car
         move_car = board.move_car(cars, car, move)
         move_car
-
         # increase steps if move is valid
         if move_car is not False:
             steps_count += 1

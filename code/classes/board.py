@@ -165,10 +165,17 @@ class Board:
 
                     # repeat for vertical cars
                     if car[1] == "V":
+<<<<<<< HEAD
                             # if move > 0:
                             #     print(f"Car {car[0]} moved up")
                             # if move < 0:
                             #     print(f"Car {car[0]} moved down")
+=======
+                            #if move > 0:
+                                #print(f"Car {car[0]} moved up")
+                            #if move < 0:
+                                #print(f"Car {car[0]} moved down")
+>>>>>>> parent of ccb488f... begin of hillclimbing
                             c[3] = c[3] + move
                             return cars, board
 

@@ -21,7 +21,7 @@ if __name__ == "__main__":
     cars = board.cars
 
 
-    # randomize
+    # # randomize
     # randomize.randomize(cars)
 
     # hillclimber
