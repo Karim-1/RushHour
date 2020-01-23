@@ -90,13 +90,11 @@ class Board:
     def print_board(self):
         # Make dict with form {A: number}
         dict = {}
-        print("HI", self.cars, len(self.cars), self.size, self.board)
         for k in range(len(self.cars)):
                 # generate for every car a number between 0 and 1
                 l=k+1
                 dict[self.cars[k][0]] = (1/len(self.cars))*l
-        print(" DICT" , dict)
-        print(" BOARD", self.board)
+
         mapped_board = [x[:] for x in self.board]
 
         # iterate over the board
@@ -115,7 +113,6 @@ class Board:
 
         # list of possible colors, ranging from grey to red
         cmap = colors.ListedColormap(['white','yellow', 'orange', 'green', 'purple', 'lightcoral', 'lightcyan', 'aquamarine', 'mediumspringgreen', 'fuchsia', 'mediumslateblue', 'darkviolet', 'dodgerblue', 'pink', 'goldenrod', 'navajowhite', 'mediumpurple', 'olivedrab', 'teal', 'palevioletred', 'lightcoral', 'maroon', 'navy', 'red'])
-        print(" BOARDAFTER", mapped_board)
         # show board
         plt.imshow(mapped_board, cmap=cmap)
         plt.yticks([])
