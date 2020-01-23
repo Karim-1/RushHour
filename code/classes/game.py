@@ -1,5 +1,4 @@
-from car import Car
-from board import Board
+from .board import Board
 
 import copy
 import sys

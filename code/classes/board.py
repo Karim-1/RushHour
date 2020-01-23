@@ -1,11 +1,11 @@
-# these imports are for plotting the board
-
-from car import Car
 from matplotlib import pyplot as plt
 from matplotlib import colors
 import csv
 import matplotlib as mpl
 
+from .car import Car
+
+import os
 
 class Board:
     """
@@ -22,10 +22,15 @@ class Board:
         self.cars = self.load_cars()
         self.board = self.load_board(self.cars)
 
+        with open('output.csv', mode='w') as output:
+            output_writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            output_writer.writerow(['Car', 'Move'])
+
     def load_cars(self):
         """
         Loads all cars into the game.
         """
+
         # read through csv gameboard file
         with open(self.gameboard_file, "r") as in_file:
             reader = csv.DictReader(in_file, skipinitialspace=True)
@@ -58,10 +63,6 @@ class Board:
 
                 # loop over all cars
                 for car in cars:
-                    
-                    # if car[2] == '_' or car[3] == '_':
-                        # print("HIERZO")
-                        # print(car)
                     row = self.convert(int(car[2]), int(car[3]))[0]
                     col = self.convert(int(car[2]), (car[3]))[1]
 
@@ -84,29 +85,31 @@ class Board:
     def print_board(self):
         # Make dict with form {A: number}
         dict = {}
-        for i in range(len(self.cars)):
+        for k in range(len(self.cars)):
                 # generate for every car a number between 0 and 1
-                j=i+1
-                dict[self.cars[i][0]] = (1/len(self.cars))*j
+                l=k+1
+                dict[self.cars[k][0]] = (1/len(self.cars))*l
+
+        mapped_board = [x[:] for x in self.board]
 
         # iterate over the board
         for i in range(self.size):
             for j in range(self.size):
                 # if the place is empty, set 0
-                if self.board[i][j] == '_':
-                    self.board[i][j]=0
+                if mapped_board[i][j] == '_':
+                    mapped_board[i][j]= 0
                 # if car is red, set 1
-                elif self.board[i][j] == 'X':
-                    self.board[i][j] = 1
+                elif mapped_board[i][j] == 'X':
+                    mapped_board[i][j] = 1
                 # else, set to value as calculated above
                 else:
-                    self.board[i][j] = dict[self.board[i][j]]
+                    letter = mapped_board[i][j]
+                    mapped_board[i][j] = dict[letter]
 
         # list of possible colors, ranging from grey to red
         cmap = colors.ListedColormap(['white','yellow', 'orange', 'green', 'purple', 'lightcoral', 'lightcyan', 'aquamarine', 'mediumspringgreen', 'fuchsia', 'mediumslateblue', 'darkviolet', 'dodgerblue', 'pink', 'goldenrod', 'navajowhite', 'mediumpurple', 'olivedrab', 'teal', 'palevioletred', 'lightcoral', 'maroon', 'navy', 'red'])
-
         # show board
-        plt.imshow(self.board, cmap=cmap)
+        plt.imshow(mapped_board, cmap=cmap)
         plt.yticks([])
         plt.xticks([])
         plt.show()
@@ -130,6 +133,8 @@ class Board:
         board = self.load_board(temporary)
         #print("MOCE_CAR", cars)
 
+        self.write_output(car[0],move)
+
         # loop over cars
         for c in temporary:
 
@@ -143,10 +148,10 @@ class Board:
                     if car[1] == "H":
 
                         # check direction to move for print statement
-                        #if move < 0:
-                            #print(f"Car {car[0]} moved left")
-                        #if move > 0:
-                            #print(f"Car {car[0]} moved right")
+                        # if move < 0:
+                            # print(f"Car {car[0]} moved left")
+                        # if move > 0:
+                            # print(f"Car {car[0]} moved right")
 
                         # change car position and update board
                         c[2] = c[2] + step
@@ -300,27 +305,23 @@ class Board:
         If so, the game is won.
         """
 
+        # create variable "row" for the red car's row
         red_car = self.cars[-1]
         coordinates = self.convert(red_car[2], red_car[3])
-        position = coordinates[1]
         row = coordinates[0]
 
-        i = k = 0
+        for i in reversed(range(self.size)):
+            if self.board[row][i] == 'X':
+                return True
 
-        # create loop that stays on the board matrix
-        while k < self.size - 1:
-            k = position + i + red_car[4]
-
-            # move one spot right each step
-            i+=1
-
-
-            # return false if one of the steps is blocked
-            if self.board[row][k] != '_':
+            elif self.board[row][i] != '_':
                 return False
 
-        # return True if right side of the red car is clear
-        return True
+
+    def write_output(self, car, move):
+        with open('output.csv',mode='a+', newline='') as output:
+            output_writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            output_writer.writerow([car, move])
 
     def _repr_(self):
         return self.board
