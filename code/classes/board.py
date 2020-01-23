@@ -147,7 +147,6 @@ class Board:
                     if car[1] == "H":
                         c[2] = c[2] + step
 
-                        self.write_output(c[0],step)
                         board = self.load_board(temporary)
                         return temporary, board
 
@@ -155,7 +154,6 @@ class Board:
                     if car[1] == "V":
                         c[3] = c[3] + step
                         
-                        self.write_output(c[0],step)
                         board = self.load_board(temporary)
                         return temporary, board
 

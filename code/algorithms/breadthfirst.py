@@ -61,5 +61,9 @@ def breadthfirst(size, board, cars):
 
                             # add all the necesarry moves to a list
                             move_list.append(move)
-                        print(move_list)
+
+                        # iterate over all moves and write them to a csv file using write_output function    
+                        for s in reversed(move_list):
+                            board.write_output(s[0], s[1])
+
                         sys.exit()
