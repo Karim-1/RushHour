@@ -90,29 +90,31 @@ class Board:
     def print_board(self):
         # Make dict with form {A: number}
         dict = {}
-        for i in range(len(self.cars)):
+        for k in range(len(self.cars)):
                 # generate for every car a number between 0 and 1
-                j=i+1
-                dict[self.cars[i][0]] = (1/len(self.cars))*j
+                l=k+1
+                dict[self.cars[k][0]] = (1/len(self.cars))*l
+
+        mapped_board = [x[:] for x in self.board]
 
         # iterate over the board
         for i in range(self.size):
             for j in range(self.size):
                 # if the place is empty, set 0
-                if self.board[i][j] == '_':
-                    self.board[i][j]=0
+                if mapped_board[i][j] == '_':
+                    mapped_board[i][j]= 0
                 # if car is red, set 1
-                elif self.board[i][j] == 'X':
-                    self.board[i][j] = 1
+                elif mapped_board[i][j] == 'X':
+                    mapped_board[i][j] = 1
                 # else, set to value as calculated above
                 else:
-                    self.board[i][j] = dict[self.board[i][j]]
+                    letter = mapped_board[i][j]
+                    mapped_board[i][j] = dict[letter]
 
         # list of possible colors, ranging from grey to red
         cmap = colors.ListedColormap(['white','yellow', 'orange', 'green', 'purple', 'lightcoral', 'lightcyan', 'aquamarine', 'mediumspringgreen', 'fuchsia', 'mediumslateblue', 'darkviolet', 'dodgerblue', 'pink', 'goldenrod', 'navajowhite', 'mediumpurple', 'olivedrab', 'teal', 'palevioletred', 'lightcoral', 'maroon', 'navy', 'red'])
-
         # show board
-        plt.imshow(self.board, cmap=cmap)
+        plt.imshow(mapped_board, cmap=cmap)
         plt.yticks([])
         plt.xticks([])
         plt.show()

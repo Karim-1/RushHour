@@ -19,14 +19,13 @@ if __name__ == "__main__":
     gameboard_file = lvl1.gameboard_file
     board = Board(size, gameboard_file)
     cars = board.cars
-    print(cars)
 
 
     # randomize
-    # randomize.randomize(cars)
+    randomize.randomize(cars)
 
     # hillclimber
-    hillclimber.hillclimber(cars)
+    #hillclimber.hillclimber(cars)
 
 
 
