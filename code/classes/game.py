@@ -1,6 +1,10 @@
 from car import Car
 from board import Board
 
+import copy
+import sys
+import numpy as np
+
 import os
 import random
 
@@ -16,7 +20,6 @@ class Game:
             self.size = 12
         else:
             self.size = int(filename[8])
-        print(self.size)
         self.gameboard_file = gameboard_file
 
 
@@ -25,122 +28,53 @@ class Game:
 if __name__ == "__main__":
 
     # initialize first game and board
-    lvl1 = Game('../../gameboards/Rushhour6x6_1.csv')
+    lvl1 = Game('../../gameboards/Rushhour9x9_4.csv')
     size = lvl1.size
     gameboard_file = lvl1.gameboard_file
     board1 = Board(size, gameboard_file)
 
+    cars = board1.cars.copy()
 
-    cars_begin = board1.cars
+    # make a set, and add the begin board to it
+    history = set()
+    history.add(str(cars))
 
-
-    # random algorithm:
-    """
-    steps = 0
-    while board1.won() == False:
-        # generate random car + move
-        move = random.choice([-2,-1,1,2])
-        car = random.choice(cars)
-
-        move_car = board1.move_car(car, move)
-        move_car
-
-        print(board1.board)
-        # increase steps if move is valid
-        if move_car is not False:
-            steps += 1
-            print(steps)
-
-    print(board1.board)
-    print(f"GAME IS WON IN {steps} STEPS!")
-    """
-
-    from copy import deepcopy
-    import queue
-    import sys
-    import numpy as np
-
-    x = set()
     dict = {}
-    q = queue.Queue()
+    queue = []
 
     # place the begin board in queue
-    q.put(cars_begin)
-    cars = cars_begin
+    queue.append(cars)
 
-    while not q.empty():
-        # states = board
+    while queue:
+        test = queue.pop(0)
+        old_cars = [x[:] for x in test]
     
-        cars = q.get()
-        print("QGET",cars)
-
-
-        for car in cars:
-            for step in [x for x in range(-size, size) if x != 0]:
-                #print('STATE', state)
+        for car in old_cars:
+            for step in [x for x in range(-(size-1), size) if x != 0]:
+                #print("OLD", old_cars, "CARS", car, step)
                 #laat move nieuw board returnen, anders false
-                move = board1.move_car(cars, car, step)
-                if (move != False) and (str(move[0]) not in x):
-                    print("CHECK", car, step)
-                    print(move[1])
+                move = Board(9, gameboard_file).move_car(old_cars, car, step)
+
+                if (move != False) and (str(move[0]) not in history):
+                    new_cars = move[0].copy()
                     # keuzes (onthou vorige boards & exclude)
-                    cars = move[0]
-                    print("CORRECT MOVE")
-                    #print(car,step)
-                    print("CARS", cars)
-                    child = deepcopy(cars)
-                    dict[str(move[0])] = child
-                    x.add(str(cars))
-                    q.put(child)
+                    dict[str(new_cars)] = old_cars
+                    history.add(str(new_cars))
+
+                    queue.append(new_cars)
 
                     #if Board.won(move):
                     for i in reversed(range(size)):
-                        print(move[1][2][i])
-                        if move[1][2][i] == 'X':
+                        if move[1][4][i] == 'X':
                             print("GOEDGEKEURD")
+                            k=1
+                            print(new_cars)
+                            while dict.get(str(new_cars)) != None:
+                                new_cars = dict.get(str(new_cars))
+                                k=k+1
+                                print(new_cars)
+                            print("STEPS", k)
                             sys.exit()
-                            break
 
-                        elif move[1][2][i] == '_':
-                            pass
-
-                        else:
-                            print("AFGEKEURD")
-                            break
-                else:
-                    print("INVALID MOVE")
-
-
-        print(q.qsize())
-        #print(q.queue)
-        print("ALLES\n\n\n\n")
-        
-
-
-    # test with a sequence of cars
-    #print(board1.board)
-    #board1.move_car(cars[0], -2)
-    # print(board1.board)
-    # board1.move_car(cars[1], -2)
-    # print(board1.board)
-    # board1.move_car(cars[2], -1)
-    # print(board1.board)
-    # board1.move_car(cars[3], -1)
-    # # test with a sequence of cars
-    # print(board1.board)
-    # board1.move_car(cars[5], 3)
-    # print(board1.board)
-    # board1.move_car(cars[4], -1)
-    # print(board1.board)
-    # board1.move_car(cars[1], -3)
-    # print(board1.board)
-    # board1.move_car(cars[0], -3)
-    # print(board1.board)
-    # board1.move_car(cars[1], 3)
-    # print(board1.board)
-    # board1.move_car(cars[4], 1)
-    # print(board1.board)
-    # board1.move_car(cars[5], -2)
-    # print(board1.board)
-    # board1.move_car(cars[-1], -2)
-    # print(board1.board)
+                        elif move[1][4][i] != '_':
+                            break       
