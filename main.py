@@ -3,7 +3,7 @@ from code.classes.car import Car
 from code.classes.game import Game
 
 from code.algorithms import breadthfirst
-from code.algorithms import hillclimber
+from code.algorithms.hillclimber import Hillclimber
 from code.algorithms import randomize
 
 # from code.algorithms import breadthfirst
@@ -22,10 +22,11 @@ if __name__ == "__main__":
 
 
     # randomize
-    randomize.randomize(cars)
+    # randomize.randomize(board)
 
     # hillclimber
-    #hillclimber.hillclimber(cars)
+    hillclimber = Hillclimber(board)
+    hillclimber.win_condition()
 
 
 
