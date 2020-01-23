@@ -9,24 +9,27 @@ def randomize(cars):
     size = lvl1.size
     gameboard_file = lvl1.gameboard_file
     board = Board(size, gameboard_file)
-    board.print_board
 
-    steps_dict = {}
-    step_count = 1
+    print(board.board)
+    steps = {}
+    steps_count = 0
     while board.won() == False:
         # generate random car + move
-        move = random.choice([-2,-1,1,2])
+        move = random.choice(list(range(-board.size,board.size)))
         car = random.choice(cars)
 
+        # move a car
         move_car = board.move_car(cars, car, move)
         move_car
 
         # increase steps if move is valid
         if move_car is not False:
+            steps_count += 1
 
-            steps_dict[step_count] = [car[0],move], board.board
-            print(step_count)
-            step_count += 1
+            # save steps including the current board in steps dictionary
+            steps[steps_count] = [car[0],move], board.board
 
-    print(f"GAME IS WON IN {step_count} STEPS!")
-    return steps_dict
+
+
+    print(f"GAME IS WON IN {steps_count} STEPS!")
+    return [steps, steps_count]
