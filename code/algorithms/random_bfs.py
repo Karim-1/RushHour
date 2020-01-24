@@ -1,7 +1,32 @@
 import sys
+import os, random
+
 from code.classes.board import Board
 
-def breadthfirst(size, board, cars):
+
+def random_bfs(size, board, cars):
+
+    current_board = board.board
+
+    steps_list = []
+
+    while board.won(current_board) == False:
+        # generate random car + move
+        move = random.choice([-2,-1,1,2])
+        car = random.choice(cars)
+        move_car = board.move_car(cars, car, move)
+
+        # increase steps if move is valid
+        if move_car is not False:
+            cars = move_car[0]
+            current_board = move_car[1]
+            steps_list.append(cars)
+
+    print(f"GAME IS WON IN {len(steps_list)} STEPS!")
+    print(steps_list)
+
+
+    cars = steps_list[-4]
 
     # make a set, and add the car information of the beginboard to it
     history = set()
@@ -73,6 +98,5 @@ def breadthfirst(size, board, cars):
                         for s in reversed(move_list):
                             board.write_output(s[0], s[1])
 
-                        for z in reversed(board_list):
-                            board.print_board(z[0], z[1])
-                        sys.exit()
+                        # for z in reversed(board_list):
+                        #     board.print_board(z[0], z[1])
