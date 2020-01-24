@@ -82,15 +82,15 @@ class Board:
         return board
 
 
-    def print_board(self):
+    def print_board(self, cars, board):
         # Make dict with form {A: number}
         dict = {}
-        for k in range(len(self.cars)):
+        for k in range(len(cars)):
                 # generate for every car a number between 0 and 1
                 l=k+1
-                dict[self.cars[k][0]] = (1/len(self.cars))*l
+                dict[cars[k][0]] = (1/len(cars))*l
 
-        mapped_board = [x[:] for x in self.board]
+        mapped_board = [x[:] for x in board]
 
         # iterate over the board
         for i in range(self.size):
@@ -153,7 +153,7 @@ class Board:
                     # repeat for vertical cars
                     if car[1] == "V":
                         c[3] = c[3] + step
-                        
+
                         board = self.load_board(temporary)
                         return temporary, board
 
@@ -206,14 +206,14 @@ class Board:
                     # print("VAL", row, step, self.size)
                     if row + step >= self.size:
                         return False
-                    
+
                     elif board[row + step][col] != '_':
                         # print(f"Car {car[0]} can't go down")
                         return False
                 elif move > 0:
                     if row - step - (length-1) < 0:
                         return False
-                    
+
                     elif board[row - step - (length-1)][col] != '_' :
                         # print(f"Car {car[0]} can't go up")
                         return False

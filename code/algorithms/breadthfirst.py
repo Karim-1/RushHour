@@ -1,4 +1,5 @@
 import sys
+from code.classes.board import Board
 
 def breadthfirst(size, board, cars):
 
@@ -55,14 +56,14 @@ def breadthfirst(size, board, cars):
                         # start loop that ends if the node has no parent in the dictionary
                         while dict.get(str(new_cars)) != None:
 
-                            # get the previous car information and the move from dictionary 
+                            # get the previous car information and the move from dictionary
                             move = dict.get(str(new_cars))[1]
                             new_cars = dict.get(str(new_cars))[0]
 
                             # add all the necesarry moves to a list
                             move_list.append(move)
 
-                        # iterate over all moves and write them to a csv file using write_output function    
+                        # iterate over all moves and write them to a csv file using write_output function
                         for s in reversed(move_list):
                             board.write_output(s[0], s[1])
 
