@@ -29,7 +29,6 @@ if __name__ == "__main__":
     # hillclimber.win_condition()
 
 
-
     # breadthfirst
     breadthfirst.breadthfirst(size, board, cars)
 
