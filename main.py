@@ -27,11 +27,11 @@ if __name__ == "__main__":
 
     # hillclimber
     #hillclimber = Hillclimber(board)
-    # hillclimber.win_condition()
+
 
 
     # breadthfirst
-    #breadthfirst.breadthfirst(size, board, cars)
+    breadthfirst.breadthfirst(size, board, cars)
 
     # randomize combined with breadthfirst
     random_bfs.random_bfs(size, board, cars)

@@ -1,7 +1,10 @@
-import sys
+import sys, time
 from code.classes.board import Board
 
+
 def breadthfirst(size, board, cars):
+    # start the running time
+    start_time = time.time()
 
     # make a set, and add the car information of the beginboard to it
     history = set()
@@ -73,6 +76,14 @@ def breadthfirst(size, board, cars):
                         for s in reversed(move_list):
                             board.write_output(s[0], s[1])
 
+                        # stop the running time of the algorithm
+                        elapsed_time = round(time.time() - start_time, 4)
+
+                        # Prints the amount of steps from the board
+                        board.results(move_list, elapsed_time)
+
                         for z in reversed(board_list):
                             board.print_board(z[0], z[1])
+
+                        # Exits the game
                         sys.exit()
