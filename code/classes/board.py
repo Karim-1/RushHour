@@ -246,5 +246,12 @@ class Board:
             output_writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             output_writer.writerow([car, move])
 
+    def results(self, steps, elapsed_time):
+
+        # Adds one to the complete amount of steps, since the car also needs to ride out of the parking
+        steps = len(steps) + 1
+        print("\nsteps:       ", steps, "moves.")
+        print("running time:", elapsed_time, "seconds.")
+
     def _repr_(self):
         return self.board

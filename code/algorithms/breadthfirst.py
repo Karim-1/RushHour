@@ -1,7 +1,10 @@
-import sys
+import sys, time
 from code.classes.board import Board
 
+
 def breadthfirst(size, board, cars):
+    # start the running time
+    start_time = time.time()
 
     # make a set, and add the car information of the beginboard to it
     history = set()
@@ -52,9 +55,15 @@ def breadthfirst(size, board, cars):
 
                         # make a list that will collect all the moves in the winning solution
                         move_list=[]
+                        board_list = []
 
                         # start loop that ends if the node has no parent in the dictionary
                         while dict.get(str(new_cars)) != None:
+
+                            # generating and printing all the correct boards
+                            current_board = board.load_board(new_cars)
+                            board_list.append([new_cars, current_board])
+
 
                             # get the previous car information and the move from dictionary
                             move = dict.get(str(new_cars))[1]
@@ -67,4 +76,14 @@ def breadthfirst(size, board, cars):
                         for s in reversed(move_list):
                             board.write_output(s[0], s[1])
 
+                        # stop the running time of the algorithm
+                        elapsed_time = round(time.time() - start_time, 4)
+
+                        # Prints the amount of steps from the board
+                        board.results(move_list, elapsed_time)
+
+                        for z in reversed(board_list):
+                            board.print_board(z[0], z[1])
+
+                        # Exits the game
                         sys.exit()

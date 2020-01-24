@@ -22,15 +22,12 @@ if __name__ == "__main__":
 
 
     # randomize
-    randomize.randomize(board)
+    # randomize.randomize(board)
 
     # hillclimber
     #hillclimber = Hillclimber(board)
-    # hillclimber.win_condition()
-
-
 
     # breadthfirst
-    #breadthfirst.breadthfirst(size, board, cars)
+    breadthfirst.breadthfirst(size, board, cars)
 
     # Try random algorithm
