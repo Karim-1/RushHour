@@ -3,7 +3,7 @@ from code.classes.car import Car
 from code.classes.game import Game
 
 from code.algorithms import breadthfirst
-from code.algorithms.hillclimber import Hillclimber
+from code.algorithms.cut import Cut
 from code.algorithms import randomize
 from code.algorithms import random_bfs
 
@@ -25,18 +25,18 @@ if __name__ == "__main__":
     # randomize
     # randomize.randomize(board)
 
-    # hillclimber
-    #hillclimber = Hillclimber(board)
-
-
+    # cut algorithm
+    cut = Cut(board)
+    print("cut")
+    cut.run()
 
     # breadthfirst
-    breadthfirst.breadthfirst(size, board, cars)
+    # breadthfirst.breadthfirst(size, board, cars)
 
     # randomize combined with breadthfirst
-    random_bfs.random_bfs(size, board, cars)
-    
-    
+    # random_bfs.random_bfs(size, board, cars)
+
+
 
 
 
