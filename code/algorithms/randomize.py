@@ -1,45 +1,33 @@
-import os, time
+import os, random, time
 from code.classes.game import Game
 from code.classes.board import Board
 from code.helpers.show_results import show_results
 from code.helpers.random_move import random_move
 
-class Randomize:
-    """
-    This class moves cars at random untill a solution has been found.
-    """
+def randomize(board):
 
-    def __init__(self, board):
-        self.board = board
-        self.cars = board.cars
+    start_time = time.time()
+    cars = board.cars.copy()
+    current_board = board.board.copy()
 
-    def run(self):
-        """
-        Runs the random algorithm.
-        """
+    steps_list = []
 
-        cars = self.board.cars.copy()
-        current_board = self.board.board.copy()
+    while board.won(current_board) == False:
 
-        # start the running time of the algorithm
-        start_time = time.time()
-        steps_list = []
+        # generate random car + move
+        move = random.choice(list(range(-board.size + 1, board.size - 1)))
+        car = random.choice(cars)
+        move_car = board.move_car(cars, car, move)
 
-        while self.board.won(current_board) == False:
+        # if move is valid
+        if move_car is not False:
 
-            randomized_move = random_move(self.board.size, cars, current_board)
-            steps_list.append((randomized_move[2], randomized_move[1]))
-            cars = randomized_move[0]
-            print(current_board)
+            # update cars and board, append move to steps
+            cars = move_car[0]
+            current_board = move_car[1]
+            steps_list.append([(car[0], move), current_board])
 
-        # measure the time this function has taken to run
-        elapsed_time = round(time.time() - start_time, 4)
+    # measure the time this function has taken to run
+    elapsed_time = round(time.time() - start_time, 4)
 
-
-        return steps_list, elapsed_time, cars
-
-    def results(self, outcome):
-        """
-        Shows the running time, amount of steps and displays all the boards.
-        """
-        show_results(self.board, outcome[0], outcome[1], outcome[2])
+    return board, steps_list, elapsed_time, cars

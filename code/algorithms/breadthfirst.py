@@ -1,5 +1,6 @@
 import sys, time
 from code.classes.board import Board
+from code.helpers.show_results import show_results
 
 
 def breadthfirst(size, board, cars):
@@ -79,11 +80,10 @@ def breadthfirst(size, board, cars):
                         # stop the running time of the algorithm
                         elapsed_time = round(time.time() - start_time, 4)
 
-                        # Prints the amount of steps from the board
-                        board.results(move_list, elapsed_time)
+                        board_list.reverse()
 
-                        for z in reversed(board_list):
-                            board.print_board(z[0], z[1])
+                        # Prints the amount of steps from the board
+                        show_results(board, board_list, elapsed_time, cars)
 
                         # Exits the game
                         sys.exit()

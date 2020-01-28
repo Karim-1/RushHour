@@ -1,4 +1,5 @@
-from .randomize import Randomize
+from .randomize import randomize
+from code.helpers.show_results import show_results
 import numpy, random, time, copy
 
 
@@ -19,8 +20,10 @@ class Cut:
         Runs the algorithm.
         """
 
+        start_time = time.time()
+
         # generate random solution
-        solution = randomize(self.board)
+        solution = randomize(self.board)[1]
 
         # make copy of board and cars
         board = self.board.board.copy()
@@ -54,7 +57,7 @@ class Cut:
                 # update cars, board and steps
                 cars = move[0]
                 current_board = move[1]
-                steps.append(move[2])
+                steps.append((move[2], current_board))
 
                 counter += 1
 
@@ -67,22 +70,25 @@ class Cut:
                     current_board = start_board
 
                     attempts += 1
-
                 if attempts == 1000:
 
                     # keep old steps from solution
-                    for j in (range(i-20, i)):
-                        steps.append(solution[j][0])
+                    for j in (range(i-cut_steps, i)):
+                        steps.append((solution[j][0], solution[j][1]))
                     break
 
             # add steps to new solution
             new_solution.extend(steps)
 
+        print("old solution:", len(solution))
+        print("new solution:", len(new_solution) + 1)
 
-        print("old solution:", len(solution), "steps")
-        print("new solution:", len(new_solution), "steps")
+        # calculate the elapsed start_time
+        elapsed_time = round(time.time() - start_time, 4)
+        # prints the amount of steps, elapsed time and all the boards to the screen
+        show_results(self.board, new_solution, elapsed_time, cars)
 
-        return new_solution
+        return steps
 
 
     def random_move(self, cars, board):
@@ -91,10 +97,10 @@ class Cut:
         """
 
         # generate random car + move
-        move = random.choice(list(range(-board.size + 1, board.size - 1)))
+        move = random.choice(list(range(-self.board.size + 1, self.board.size - 1)))
         car = random.choice(cars)
 
-        move_car = board.move_car(cars, car, move)
+        move_car = self.board.move_car(cars, car, move)
         # increase steps if move is valid
         if move_car is not False:
             cars = move_car[0]
