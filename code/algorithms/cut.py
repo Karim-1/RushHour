@@ -1,11 +1,12 @@
-
-from .randomize import randomize
+from .randomize import Randomize
 import numpy, random, time, copy
 
 
 class Cut:
     """
-    This algorithm replaces parts of the steps to a solution with a smaller amount of steps.
+    This algorithm cuts up a random solution in 10 equal parts
+    and tries to find a random faster path for each part.
+    After 1000 attempts it keeps the old path.
     """
 
     def __init__(self, board):
@@ -13,30 +14,29 @@ class Cut:
         self.cars = board.cars
 
 
-    def run(self):
+    def run(self, divider):
         """
         Runs the algorithm.
         """
 
         # generate random solution
         solution = randomize(self.board)
-        # make copies of board
-        board = self.board.board.copy()
 
-        cars = self.cars
+        # make copy of board and cars
+        board = self.board.board.copy()
+        cars = self.cars.copy()
 
         counter = 0
         attempts = 0
-        new_steps = []
+        new_solution = []
 
-        # cut steps into 10
-        cut_steps = round(len(solution)/10)
-        print("cut_steps:", cut_steps)
+        # cut steps into parts
+        cut_steps = round(len(solution)/divider)
 
-        # create path for every 20 steps
+        # create path for every part
         for i in (range(cut_steps, len(solution), cut_steps)):
 
-            # cut_goal = solution[i]
+            # create board
             goal_board = solution[i][1]
 
             # create starting board for while loop
@@ -46,59 +46,55 @@ class Cut:
             steps = []
             attempts = 0
 
-            while self.goal_reached(goal_board, current_board) == False:
+            while current_board != goal_board:
 
+                # move random car
                 move = self.random_move(cars, current_board)
+
+                # update cars, board and steps
                 cars = move[0]
                 current_board = move[1]
-
                 steps.append(move[2])
 
                 counter += 1
 
-                # if the goal hasn't been reached in 20 steps
+                # if the goal hasn't been reached within cut steps
                 if counter == cut_steps:
 
-                    # reset counter, list with steps and board
-                    counter = 0
+                    # reset list with steps, counter and board
                     steps = []
+                    counter = 0
                     current_board = start_board
 
                     attempts += 1
-                    # print(f"Attempt {attempts}")
-
 
                 if attempts == 1000:
-                    print("no solution found in 1000 steps, keeping old steps")
+
+                    # keep old steps from solution
                     for j in (range(i-20, i)):
                         steps.append(solution[j][0])
                     break
-            print("new route found in", len(steps)," steps")
-            new_steps.extend(steps)
+
+            # add steps to new solution
+            new_solution.extend(steps)
 
 
         print("old solution:", len(solution), "steps")
-        # delete old path, add new path
-        solution = new_steps
-        print("new solution:", len(solution), "steps")
+        print("new solution:", len(new_solution), "steps")
 
-    def goal_reached(self, goal, board):
-        """
-        Returns true if the board matches the goal board.
-        """
-        if board == goal:
-            return True
-        return False
+        return new_solution
+
 
     def random_move(self, cars, board):
         """
         Moves random car.
         """
+
         # generate random car + move
-        move = random.choice([-2,-1,1,2])
+        move = random.choice(list(range(-board.size + 1, board.size - 1)))
         car = random.choice(cars)
 
-        move_car = self.board.move_car(cars, car, move)
+        move_car = board.move_car(cars, car, move)
         # increase steps if move is valid
         if move_car is not False:
             cars = move_car[0]

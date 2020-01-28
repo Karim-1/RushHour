@@ -4,6 +4,7 @@ import csv
 import matplotlib as mpl
 
 from code.classes.car import Car
+from code.helpers.convert import convert
 
 import os
 
@@ -63,8 +64,8 @@ class Board:
 
                 # loop over all cars
                 for car in cars:
-                    row = self.convert(int(car[2]), int(car[3]))[0]
-                    col = self.convert(int(car[2]), (car[3]))[1]
+                    row = convert(self.size, int(car[2]), int(car[3]))[0]
+                    col = convert(self.size, int(car[2]), (car[3]))[1]
 
                     # check for cars at the current coordinate
                     if col == y and row == x:
@@ -114,16 +115,6 @@ class Board:
         plt.xticks([])
         plt.show()
 
-
-    def convert(self, x, y):
-        """
-        Converts car coordinates to correct array places.
-        """
-        #print(x,y)
-        col = x - 1
-        row = self.size - y
-        return [row,col]
-
     def move_car(self, carts, car, step):
         """
         Moves a car.
@@ -164,8 +155,8 @@ class Board:
         Checks if a car move is legal.
         """
         # save row and column coordinates
-        row = self.convert(car[2], car[3])[0]
-        col = self.convert(car[2], car[3])[1]
+        row = convert(self.size, car[2], car[3])[0]
+        col = convert(self.size, car[2], car[3])[1]
         length = car[4]
         orientation = car[1]
 
@@ -230,7 +221,7 @@ class Board:
 
         # create variable "row" for the red car's row
         red_car = self.cars[-1]
-        coordinates = self.convert(red_car[2], red_car[3])
+        coordinates = convert(self.size, red_car[2], red_car[3])
         row = coordinates[0]
 
         for i in reversed(range(self.size)):
@@ -245,13 +236,6 @@ class Board:
         with open('output.csv',mode='a+', newline='') as output:
             output_writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             output_writer.writerow([car, move])
-
-    def results(self, steps, elapsed_time):
-
-        # Adds one to the complete amount of steps, since the car also needs to ride out of the parking
-        steps = len(steps) + 1
-        print("\nsteps:       ", steps, "moves.")
-        print("running time:", elapsed_time, "seconds.")
 
     def _repr_(self):
         return self.board

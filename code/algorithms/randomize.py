@@ -1,37 +1,45 @@
-import os, random
-import time
+import os, time
 from code.classes.game import Game
 from code.classes.board import Board
+from code.helpers.show_results import show_results
+from code.helpers.random_move import random_move
 
-def randomize(board):
+class Randomize:
+    """
+    This class moves cars at random untill a solution has been found.
+    """
 
-    cars = board.cars
-    current_board = board.board
+    def __init__(self, board):
+        self.board = board
+        self.cars = board.cars
 
-    # start the running time of the algorithm
-    start_time = time.time()
-    steps_list = []
+    def run(self):
+        """
+        Runs the random algorithm.
+        """
 
-    while board.won(current_board) == False:
-        # generate random car + move
-        move = random.choice([-2,-1,1,2])
-        car = random.choice(cars)
-        move_car = board.move_car(cars, car, move)
+        cars = self.board.cars.copy()
+        current_board = self.board.board.copy()
 
-        # increase steps if move is valid
-        if move_car is not False:
-            cars = move_car[0]
-            current_board = move_car[1]
-            steps_list.append([(car[0], move), current_board])
+        # start the running time of the algorithm
+        start_time = time.time()
+        steps_list = []
 
-    # Measure the time this function has taken to run
-    elapsed_time = round(time.time() - start_time, 4)
+        while self.board.won(current_board) == False:
 
-    # analyses the results of the board
-    board.results(steps_list, elapsed_time)
-    
-    # Prints all the random steps to the screen
-    for z in steps_list:
-        board.print_board(cars, z[1])
+            randomized_move = random_move(self.board.size, cars, current_board)
+            steps_list.append((randomized_move[2], randomized_move[1]))
+            cars = randomized_move[0]
+            print(current_board)
 
-    return steps_list
+        # measure the time this function has taken to run
+        elapsed_time = round(time.time() - start_time, 4)
+
+
+        return steps_list, elapsed_time, cars
+
+    def results(self, outcome):
+        """
+        Shows the running time, amount of steps and displays all the boards.
+        """
+        show_results(self.board, outcome[0], outcome[1], outcome[2])
