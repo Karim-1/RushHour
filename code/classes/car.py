@@ -1,3 +1,9 @@
+"""
+car.py
+
+Maakt het mogelijk om cars te initialiseren
+
+"""
 class Car:
     def __init__(self, name, orientation, x, y, length):
         # returns list of info for each car

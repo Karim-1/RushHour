@@ -1,3 +1,10 @@
+"""
+randomize.py
+
+Dit algoritme kiest een willekeurige negatief of positief getal tussen de lengte van het bord - 1. Dit getal representeert een beweging.
+
+"""
+
 import os, random, time
 from code.classes.game import Game
 from code.classes.board import Board

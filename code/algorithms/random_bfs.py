@@ -1,3 +1,11 @@
+"""
+random_bfs.py
+
+Dit algoritme is een combinatie van het BFS-, cut- en randomize algoritme. 
+Dit algoritme zoekt het optimale resultaat voor kleine stukjes van het randomize algoritme.
+
+"""
+
 import sys, time
 import os, random
 
@@ -8,6 +16,8 @@ from code.helpers.show_results import show_results
 def random_bfs(size, board, cars):
     start_time = time.time()
 
+
+    # first generate the random solution
     current_board = board.board
     steps_list = []
     history = set()
@@ -24,29 +34,37 @@ def random_bfs(size, board, cars):
             cars = move_car[0]
             current_board = move_car[1]
             steps_list.append([cars, car[0], move, current_board])
-    print(f"RANDOM: {len(steps_list)} STEPS!")
+
+    print(f"RANDOM: {len(steps_list)} STEPS!, GIVE ALGORITHM MAX 30 MIN TO IMPROVE")
 
 
+    # setting values
     i = -20
     j = -1
     move_list = []
     board_list = []
     temp = []
 
-    while i > -len(steps_list):
+    # start loop that will iterate until bfs has covered all or more than 30 minutes have passed
+    while i > -len(steps_list) and round(time.time() - start_time, 4) < 1800:
         funct = bfs(steps_list, size, board, i, j)
+        
+        # append all new solutions to moves and board list
         move_list.append(funct[0])
         for g in funct[1]:
             board_list.append(g)
+
+        # try to improve the next 20 steps
         j -= 20
         i -= 20
 
+    # when while loop is finished append all other random moves
     for h in range(len(steps_list)+i+20):
         temp.append([steps_list[h][1], steps_list[h][2]])
         board_list.append([cars, steps_list[h][3]])
-
     move_list.append(temp)
 
+    # write all answers to output.csv
     for s in reversed(move_list):
         for k in s:
             board.write_output(k[0], k[1])
@@ -100,6 +118,7 @@ def bfs(steps_list, size, board, i, j):
                         # create the new node in the queue
                         queue.append(new_cars)
 
+                        # instead of checking if game is won, check if board is equal to the start of the cut
                         if steps_list[j][0] == new_cars:
                             # make a list that will collect all the moves in the winning solution
                             move_list=[]

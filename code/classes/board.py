@@ -1,3 +1,10 @@
+"""
+board.py
+
+Alle functies om het board in te stellen, bewegingen te kunnen uitvoeren & mooi te kunnen visualiseren
+
+"""
+
 from matplotlib import pyplot as plt
 from matplotlib import colors
 import csv

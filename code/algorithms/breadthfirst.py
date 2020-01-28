@@ -1,3 +1,11 @@
+"""
+breadthfirst.py
+
+Het Breadthfirst search algorithme vindt de oplossing voor het RushHour probleem met de minste stapjes. 
+Om hier te komen genereert de code alle mogelijke states waarin de borden zich kunnen bevinden.
+
+"""
+
 import sys, time
 from code.classes.board import Board
 from code.helpers.show_results import show_results

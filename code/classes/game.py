@@ -7,6 +7,13 @@ import numpy as np
 import os
 import random
 
+"""
+game.py
+
+Stel spel in
+
+"""
+
 # Creates a class in which the game is played
 # With function to check if the game is won
 

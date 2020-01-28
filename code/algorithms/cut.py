@@ -2,13 +2,15 @@ from .randomize import randomize
 from code.helpers.show_results import show_results
 import numpy, random, time, copy
 
-
-class Cut:
-    """
+"""
+    cut.py
+    
     This algorithm cuts up a random solution in 10 equal parts
     and tries to find a random faster path for each part.
     After 1000 attempts it keeps the old path.
-    """
+"""
+
+class Cut:
 
     def __init__(self, board):
         self.board = board
